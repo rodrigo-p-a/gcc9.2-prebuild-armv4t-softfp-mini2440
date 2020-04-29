@@ -1,1 +1,62 @@
 Download at: https://www.asm51.com.br/phpbb/viewtopic.php?f=48&t=18732
+
+Prebuilt toolchain for use in x86_64-linux
+
+gcc version: 9.2.0
+
+Target:
+armv4t with kernel 2.6.32
+
+Example board: mini2440
+
+Creatte using crosstol-ng
+
+How use:
+0) download
+
+1) extract:
+tar -xf gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabi.tar.xz
+
+2) setup path
+export PATH=$PATH:/path/gcc-mcut-9.2.0-linux-2.6.32-armv4t-softfp/arm-mcut-linux-gnueabi/bin/
+
+3) create a test file:
+nano main.cpp
+#include  <stdio.h>
+
+int main()
+{
+
+#ifdef __GNUC__
+fprintf(stdout,"Crosstool test\nTest compiler\nVersion: %d %d %d\n",__GNUC__,__GNUC_MINOR__,__GNUC_PATCHLEVEL__);
+#else
+fprintf(stdout,"Teste\n");
+#endif
+
+return 0;
+}
+
+4) compile:
+arm-mcut-linux-gnueabi-gcc main.cpp -static
+
+5) check:
+readelf -A a.out
+
+File is armv4t format.
+Attribute Section: aeabi
+File Attributes
+  Tag_CPU_name: "4T"
+  Tag_CPU_arch: v4T
+  Tag_ARM_ISA_use: Yes
+  Tag_THUMB_ISA_use: Thumb-1
+  Tag_ABI_PCS_wchar_t: 4
+  Tag_ABI_FP_denormal: Needed
+  Tag_ABI_FP_exceptions: Needed
+  Tag_ABI_FP_number_model: IEEE 754
+  Tag_ABI_align_needed: 8-byte
+  Tag_ABI_align_preserved: 8-byte, except leaf SP
+  Tag_ABI_enum_size: int
+
+6) Now put in your board and test.
+
+Enjoy.
